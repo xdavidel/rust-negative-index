@@ -6,18 +6,17 @@ impl<T> NegativeIndex<T> for [T]
 where
     T: Copy,
 {
-    fn pos(&self, index: i32) -> T {
+    fn pos(&self, mut index: i32) -> T {
         let length = self.len() as i32;
-        if index >= 0 {
-            if index < length {
-                self[index as usize]
-            } else {
-                self.pos(index - length)
-            }
-        } else {
-            let pos = length + index;
-            self.pos(pos)
+
+        while index >= length {
+            index -= length;
         }
+
+        while index < 0 {
+            index += length;
+        }
+        self[index as usize]
     }
 }
 
